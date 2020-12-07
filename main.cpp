@@ -12,17 +12,17 @@ void readDataBudget(int results, string budget);
 
 int main(){
 
-    string wineType = "Variety";
-    string location = "Country";
-    string budget = "Budget";
+    string wineType;
+    string location;
+    string budget;
 
     int option = 0;
 
     while (option != 5){
         cout << "======================================================================" << endl;
         cout << "      Welcome to VINO! Please select one of the following options:" << endl << endl;
-        cout << "                  1. " << wineType << "     2. " << location << endl; // tags?? (smoky, soft notes, etc.)
-        cout << "                  3. " << budget << "       4. Show me!" << endl;
+        cout << "                  1. Variety             2. Country " << endl; // tags?? (smoky, soft notes, etc.)
+        cout << "                  3. Budget              4. Show me!" << endl;
         cout << "                          5. Exit" << endl; 
         cout << "======================================================================" << endl;
 
@@ -35,21 +35,24 @@ int main(){
         else{
             if (option == 1){
                 cout << "Excellent! What variety shall we go with today?" << endl;
-                cin >> wineType;
+                getline(cin ,wineType);
             }
 
             if (option == 2){
                 cout << "Fantastic! What lovely country shall you choose?" << endl;
-                cin >> location;
+                getline(cin, location);
             }
 
             if (option == 3){
                 cout << "Magnificent! What's your budget looking like today?" << endl;
-                cin >> budget;
+                getline(cin, budget);
             }
 
             if (option == 4){
                 if (wineType != "" && location != "" && budget != ""){
+
+                    cout << "\n        Your choices are a " << wineType << " from " << location << 
+                    "\n                    with a price of no more than $" << budget << "." << endl << endl;
 
                     cout << "                     What's your priority?" << endl;
                     cout << "                    1. Type       2. Location" << endl;
