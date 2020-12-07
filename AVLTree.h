@@ -49,8 +49,8 @@ public:
     Node* rotateRightLeft(Node* node);
     Node* rotateLeftRight(Node* node);
 
-    void print(); // use inorder traversal 
-    Node* printPostOrder(Node* currNode);
+    void print(); 
+    Node* inverseInorder(Node* currNode); // prints biggest to smallest values 
 
 private:
     Node* root = nullptr;
@@ -246,17 +246,16 @@ Tree::Node* Tree::rotateRightLeft(Node* node){
 
 void Tree::print(){
     numTimesCalled = 0;
-    printPostOrder(root);
+    inverseInorder(root);
 }
 
-Tree::Node* Tree::printPostOrder(Node* currNode){
-    if (currNode != nullptr || numTimesCalled < numToPrint){
-        numTimesCalled++;
-        printPostOrder(currNode->left);
-        printPostOrder(currNode->right);
-        // name, type, location, province, region, ppp 
-        cout << numTimesCalled+1 << ". " << currNode->name << ", " << currNode->type << ", " << 
-        currNode->location << ", " << currNode->province << ", " << currNode->region << "< " << currNode->pricePerPoint << endl;
+Tree::Node* Tree::inverseInorder(Node* currNode){
+    if (currNode != nullptr){
+        //numTimesCalled++;
+        inverseInorder(currNode->right);
+        cout << currNode->name << " | " << currNode->type << " | " << currNode->location 
+        << ", " << currNode->region << ", " << currNode->province << " | " << currNode->pricePerPoint << endl;
+        inverseInorder(currNode->left);
     }
-
+    return nullptr;
 }
