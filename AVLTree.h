@@ -48,10 +48,11 @@ public:
     Node* rotateLeftRight(Node* node);
 
     void print(); 
-    Node* inverseInorder(Node* currNode); // prints biggest to smallest values 
+    Node* Inorder(Node* currNode); // prints biggest to smallest values 
 
 private:
     Node* root = nullptr;
+    int numTracker = 0;
 };
 
 // creates and adds new node 
@@ -241,16 +242,16 @@ Tree::Node* Tree::rotateRightLeft(Node* node){
 }
 
 void Tree::print(){
-    inverseInorder(root);
+    Inorder(root);
 }
 
-Tree::Node* Tree::inverseInorder(Node* currNode){
+Tree::Node* Tree::Inorder(Node* currNode){
     if (currNode != nullptr){
-        //numTimesCalled++;
-        inverseInorder(currNode->right);
-        cout << currNode->name << " | " << currNode->type << " | " << currNode->location 
-        << ", " << currNode->region << ", " << currNode->province << " | " << currNode->pricePerPoint << endl;
-        inverseInorder(currNode->left);
+        Inorder(currNode->left);
+        cout << numTracker+1 << ". " << currNode->name << " | " << currNode->type << " | " << currNode->location 
+        << ", " << currNode->region << ", " << currNode->province << " | $" << currNode->price << endl;
+        numTracker++;
+        Inorder(currNode->right);
     }
     return nullptr;
 }

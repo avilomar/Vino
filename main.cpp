@@ -1,6 +1,7 @@
 #include "AVLTree.h"
 #include "adjacencyList.h"
 #include <fstream> 
+#include <chrono>
 
 void readData(string wineType, string location, string budget);
 
@@ -104,14 +105,21 @@ void readData(string wineType, string location, string budget){
                 list.addVino(country, title, points, price, province, region, variety, ppp); 
             } 
         }
-        catch(exception e){ }
+        catch(exception e){ } // skips adding any "problem entries" (missing data, incorrect data, etc.)
         
     }
 
+    // timing help from https://stackoverflow.com/questions/22387586/measuring-execution-time-of-a-function-in-c
     cout << "                           AVL TREE RESULTS"<< endl;
-        tree.print();
+
+    auto treeStart = std::chrono::high_resolution_clock::now();
+    tree.print();
+    auto treeEnd = std::chrono::high_resolution_clock::now();
+
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(treeEnd - treeStart ).count();
+    cout << "\n\n                TOTAL TIME TAKEN: " << duration << " MICROSECONDS" << endl;
 
 
-        cout << "                         ADJACENCY LIST RESULTS"<< endl;
+    cout << "                         ADJACENCY LIST RESULTS"<< endl;
     // PRINT ADJACENCY STUFF BELOW 
 }
