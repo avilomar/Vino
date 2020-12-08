@@ -1,9 +1,12 @@
 #include "AVLTree.h"
+#include "adjacencyList.h"
 #include <fstream> 
 
 void readDataWineType(string wineType);
 void readDataLocation(string location);
 void readDataBudget(string budget);
+void readData(string wineType, string location, string budget);
+Lista list; // adjacency list
 
 int main(){
 
@@ -48,7 +51,7 @@ int main(){
 
             if (option == 4){
                 if (wineType != "" && location != "" && budget != ""){
-
+/*
                     cout << "\n                        " << wineType << " | " << location << " | $" << budget << endl << endl;
 
                     cout << "                     What's your priority?" << endl;
@@ -78,7 +81,9 @@ int main(){
                         readDataBudget(budget);
                         return 0;
                     }
-
+*/
+                readData(wineType, location, budget);
+                
                 }
                 else{
                     cout << "Wait! You forgot to enter something!" << endl;
@@ -103,12 +108,57 @@ int main(){
     return 0;
 }
 
+void readData(string wineType, string location, string budget){
+    string country, province, region, title, variety, points, price, ppp;
+    float pricePerPoint;
+
+    Tree tree = Tree();
+    //AdjacencyList list = AdjacencyList(results);
+    
+
+    ifstream loadedFile("winemag-data-130k-v2.csv");
+    string fileLine;
+    getline(loadedFile, fileLine); 
+    getline(loadedFile, fileLine); // getting rid of headers 
+
+    while (getline(loadedFile, fileLine)){
+        istringstream streem(fileLine); // turns line into stream 
+
+        getline(streem, country, ','); 
+        getline(streem, points, ','); 
+        getline(streem, price, ','); 
+        getline(streem, province, ','); 
+        getline(streem, region, ','); 
+        getline(streem, title, ',');
+        getline(streem, variety, ','); 
+        getline(streem, ppp);
+
+        try{
+            if (variety == wineType && country == location && stoi(price) <= stoi(budget)){ // only add values that match the variety, location and budget
+            tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
+            list.addVino(country, title, points, price, province, region, variety, ppp);// line to add to list here 
+            } 
+        }
+        catch(exception e){
+            
+        }
+        
+         cout << "                           AVL TREE RESULTS"<< endl;
+    tree.print();
+
+
+    cout << "                         ADJACENCY LIST RESULTS"<< endl;
+    // PRINT ADJACENCY STUFF BELOW 
+    }
+}
+
 void readDataWineType(string wineType){
     string country, province, region, title, variety, points, price, ppp;
     float pricePerPoint;
 
     Tree tree = Tree();
     //AdjacencyList list = AdjacencyList(results);
+    
 
     ifstream loadedFile("winemag-data-130k-v2.csv");
     string fileLine;
@@ -130,7 +180,7 @@ void readDataWineType(string wineType){
         try{
             if (variety == wineType){ // only add values that match the variety 
             tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
-            // line to add to list here 
+            list.addVino(country, title, points, price, province, region, variety, ppp);// line to add to list here 
             } 
         }
         catch(exception e){
@@ -175,7 +225,7 @@ void readDataLocation(string location){
         try{
             if (country == location){ // only add values that match the country  
             tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
-            // line to add to list here 
+            list.addVino(country, title, points, price, province, region, variety, ppp);// line to add to list here 
             } 
         }
         catch(exception e){
@@ -219,7 +269,7 @@ void readDataBudget(string budget){
         try{
             if (stoi(price) <= stoi(budget)){ // only add values that are under or equal to budget 
             tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
-            // line to add to list here 
+            list.addVino(country, title, points, price, province, region, variety, ppp);// line to add to list here 
             } 
 
         }

@@ -1,37 +1,26 @@
 #pragma once
-
 #include <iostream>
 #include <string>
 #include <vector>
 #include <iomanip>
-#include <map> 
+#include <map>
 #include <unordered_map>
 using namespace std;
-
-class AdjacencyList{ 
-public:
-    struct Node{
-        string name;
-        double rank = 0.00; // starts off as 1/numVertices, but changes as p iterations continue 
-        Node(string name){ this->name = name; }
-    };
-
-    AdjacencyList(int toPrint){
-        numToPrint = toPrint;
-    }
-
-    void addEdge(string from, string to);
-    void print();
-
+class Lista{
 private:
-    unordered_map<string, vector<string>> outDegree; // returns vec of who they are pointing to 
-    map<string, Node*> nodes; // keep track of pages + their ranks 
-    static int numToPrint;
+    map<string, map<string, string> > vinos;
+public:
+    int addVino(string country, string title, string points, string price, string province, string region, string variety, string pricePerPoint);
 };
-
-void AdjacencyList::addEdge(string from, string to){
-    outDegree[from].push_back(to); // vec of who they are pointing to 
-
-    Node* newFrom = new Node(from);
-    nodes.emplace(from, newFrom); // will not replace if already created 
+int Lista::addVino(string country, string title, string points, string price, string province, string region, string variety, string pricePerPoint){
+    map<string, string> props;
+    props.insert(make_pair("country", country));
+    props.insert(make_pair("points", points));
+    props.insert(make_pair("price", price));
+    props.insert(make_pair("province", province));
+    props.insert(make_pair("region", region));
+    props.insert(make_pair("variety", variety));
+    props.insert(make_pair("pricePerPoint", pricePerPoint));
+    vinos.insert(make_pair(title, props));
+    return 1;
 }
