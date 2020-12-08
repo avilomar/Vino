@@ -16,7 +16,7 @@ int main(){
     while (option != 5){
         cout << "======================================================================" << endl;
         cout << "      Welcome to VINO! Please select one of the following options:" << endl << endl;
-        cout << "                  1. Variety             2. Country " << endl; // tags?? (smoky, soft notes, etc.)
+        cout << "                  1. Variety             2. Country " << endl; 
         cout << "                  3. Budget              4. Show me!" << endl;
         cout << "                              5. Exit" << endl; 
         cout << "======================================================================" << endl;
@@ -30,7 +30,7 @@ int main(){
         else{
             if (option == 1){
                 cout << "Excellent! What variety shall we go with today?" << endl;
-                cin.ignore();
+                cin.ignore(); // gets rid of any extra whitespace before entry 
                 getline(cin, wineType);
             }
 
