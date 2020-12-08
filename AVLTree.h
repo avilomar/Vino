@@ -18,26 +18,24 @@ public:
         string province;
         string region;
         float pricePerPoint;
+        int price;
         Node* right = nullptr;
         Node* left = nullptr;
 
-        Node(string name, string type, string location, string province, string region, float pricePerPoint){
+        Node(string name, string type, string location, string province, string region, float pricePerPoint, int price){
             this->name = name;
             this->type = type;
             this->location = location;
             this->province = province;
             this->region = region;
             this->pricePerPoint = pricePerPoint;
+            this->price = price;
         }
 
     };
 
-    Tree(int toPrint){
-        numToPrint = toPrint;
-    }
-
-    void addNode(string name, string type, string location, string province, string region, float pricePerPoint);
-    Node* insertNewNode(Node* node, string name, string type, string location, string province, string region, float pricePerPoint);
+    void addNode(string name, string type, string location, string province, string region, float pricePerPoint, int price);
+    Node* insertNewNode(Node* node, string name, string type, string location, string province, string region, float pricePerPoint, int price);
 
     void checkBalanceInorder(Node* currNode);
     void reBalance(Node* node);
@@ -54,19 +52,17 @@ public:
 
 private:
     Node* root = nullptr;
-    int numToPrint = 25;
-    static int numTimesCalled;
 };
 
 // creates and adds new node 
-void Tree::addNode(string name, string type, string location, string province, string region, float pricePerPoint){
+void Tree::addNode(string name, string type, string location, string province, string region, float pricePerPoint, int price){
 
     if (root == nullptr){
-        Node* newNode = new Node(name, type, location, province, region, pricePerPoint);
+        Node* newNode = new Node(name, type, location, province, region, pricePerPoint, price);
         root = newNode;
     }
     else{
-        insertNewNode(root, name, type, location, province, region, pricePerPoint);
+        insertNewNode(root, name, type, location, province, region, pricePerPoint, price);
         Node* currNode = root;
 
         while (currNode!= nullptr){ // iterate and find added node so as to rebalance below 
@@ -86,20 +82,20 @@ void Tree::addNode(string name, string type, string location, string province, s
 
 }
 
-Tree::Node* Tree::insertNewNode(Node* node, string name, string type, string location, string province, string region, float pricePerPoint){
+Tree::Node* Tree::insertNewNode(Node* node, string name, string type, string location, string province, string region, float pricePerPoint, int price){
     // from https://stepik.org/submissions/1480362/296162976?unit=379727
     if (node == nullptr){
-        Node* newnode = new Node(name, type, location, province, region, pricePerPoint);
+        Node* newnode = new Node(name, type, location, province, region, pricePerPoint, price);
         return newnode;
     }
     if (pricePerPoint == node->pricePerPoint){
         return nullptr;
     }
     else if (pricePerPoint < node->pricePerPoint){
-        node->left = insertNewNode(node->left, name, type, location, province, region, pricePerPoint);
+        node->left = insertNewNode(node->left, name, type, location, province, region, pricePerPoint, price);
     }
     else{
-        node->right = insertNewNode(node->right, name, type, location, province, region, pricePerPoint);
+        node->right = insertNewNode(node->right, name, type, location, province, region, pricePerPoint, price);
     }
     return node;
 }
@@ -245,7 +241,6 @@ Tree::Node* Tree::rotateRightLeft(Node* node){
 }
 
 void Tree::print(){
-    numTimesCalled = 0;
     inverseInorder(root);
 }
 

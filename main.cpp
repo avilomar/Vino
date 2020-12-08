@@ -1,14 +1,9 @@
 #include "AVLTree.h"
 #include <fstream> 
 
-int Tree::numTimesCalled;
-
-void doTree(string name, string extra, float pricePerPoint); 
-void doList(string name, string extra, float pricePerPoint);
-
-void readDataWineType(int results, string wineType);
-void readDataLocation(int results, string location);
-void readDataBudget(int results, string budget);
+void readDataWineType(string wineType);
+void readDataLocation(string location);
+void readDataBudget(string budget);
 
 int main(){
 
@@ -23,7 +18,7 @@ int main(){
         cout << "      Welcome to VINO! Please select one of the following options:" << endl << endl;
         cout << "                  1. Variety             2. Country " << endl; // tags?? (smoky, soft notes, etc.)
         cout << "                  3. Budget              4. Show me!" << endl;
-        cout << "                          5. Exit" << endl; 
+        cout << "                              5. Exit" << endl; 
         cout << "======================================================================" << endl;
 
         cout <<"Option: ";
@@ -35,24 +30,26 @@ int main(){
         else{
             if (option == 1){
                 cout << "Excellent! What variety shall we go with today?" << endl;
-                getline(cin ,wineType);
+                cin.ignore();
+                getline(cin, wineType);
             }
 
             if (option == 2){
                 cout << "Fantastic! What lovely country shall you choose?" << endl;
+                cin.ignore();
                 getline(cin, location);
             }
 
             if (option == 3){
                 cout << "Magnificent! What's your budget looking like today?" << endl;
+                cin.ignore();
                 getline(cin, budget);
             }
 
             if (option == 4){
                 if (wineType != "" && location != "" && budget != ""){
 
-                    cout << "\n        Your choices are a " << wineType << " from " << location << 
-                    "\n                    with a price of no more than $" << budget << "." << endl << endl;
+                    cout << "\n                        " << wineType << " | " << location << " | $" << budget << endl << endl;
 
                     cout << "                     What's your priority?" << endl;
                     cout << "                    1. Type       2. Location" << endl;
@@ -66,24 +63,17 @@ int main(){
                         if (option > 3 || option < 1)
                             cout << "A number 1-3, please." << endl;
                     }
-
-                    cout << "How many results would you like to show?" << endl;
-                    int results;
-                    cout << "Number of results: ";
-                    cin >> results;
-                    cout << endl;
-
                     
                     if (option == 1){
-                        readDataWineType(results, wineType);
+                        readDataWineType(wineType);
                     }
 
                     if (option == 2){
-                        readDataLocation(results, location);
+                        readDataLocation(location);
                     }
 
                     if (option == 3){
-                        readDataBudget(results, budget);
+                        readDataBudget(budget);
                     }
 
                 }
@@ -110,50 +100,118 @@ int main(){
     return 0;
 }
 
-void readDataWineType(int results, string wineType){
-    string designation, country, province, region, variety, points, price;
+void readDataWineType(string wineType){
+    string country, province, region, title, variety, points, price, ppp;
     float pricePerPoint;
 
-    // before adding intro tree/list, throw out if a value is missing 
-
-    Tree tree = Tree(results);
+    Tree tree = Tree();
     //AdjacencyList list = AdjacencyList(results);
 
-    ifstream loadedFile("winemag-data_first150k.csv");
+    ifstream loadedFile("winemag-data-130k-v2.csv");
     string fileLine;
-    getline(loadedFile, fileLine); // skips first line 
+    getline(loadedFile, fileLine); 
+    getline(loadedFile, fileLine); // getting rid of headers 
+
     while (getline(loadedFile, fileLine)){
         istringstream streem(fileLine); // turns line into stream 
 
         getline(streem, country, ','); 
-        getline(streem, designation, ','); 
         getline(streem, points, ','); 
         getline(streem, price, ','); 
         getline(streem, province, ','); 
         getline(streem, region, ','); 
+        getline(streem, title, ',');
         getline(streem, variety, ','); 
-        
-        try{
-            pricePerPoint = (stof(price)/stof(points))*100.0; 
-            if (variety == wineType) // only add values that match the variety 
-                tree.addNode(designation, variety, country, province, region, pricePerPoint);
-        }
-        catch(exception e){
-           pricePerPoint = 0; // if missing a value, discard 
-        }
+        getline(streem, ppp);
+
+        if (variety == wineType){ // only add values that match the variety 
+            tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
+            // line to add to list here 
+        } 
         
     }
 
-    cout << "                           AVL Tree:"<< endl;
+    cout << "                           AVL TREE RESULTS"<< endl;
     tree.print();
 
-    // print adjacency list stuff below 
+
+    cout << "                         ADJACENCY LIST RESULTS"<< endl;
+    // PRINT ADJACENCY STUFF BELOW 
 }
 
-void readDataLocation(int results, string location){
-    cout << "temp";
+void readDataLocation(string location){
+    string country, province, region, title, variety, points, price, ppp;
+    float pricePerPoint;
+
+    Tree tree = Tree();
+    //AdjacencyList list = AdjacencyList(results);
+
+    ifstream loadedFile("winemag-data-130k-v2.csv");
+    string fileLine;
+    getline(loadedFile, fileLine); 
+    getline(loadedFile, fileLine); // getting rid of headers 
+
+    while (getline(loadedFile, fileLine)){
+        istringstream streem(fileLine); // turns line into stream 
+
+        getline(streem, country, ','); 
+        getline(streem, points, ','); 
+        getline(streem, price, ','); 
+        getline(streem, province, ','); 
+        getline(streem, region, ','); 
+        getline(streem, title, ',');
+        getline(streem, variety, ','); 
+        getline(streem, ppp);
+
+        if (country == location){ // only add values that match the country  
+            tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
+            // line to add to list here 
+        } 
+        
+    }
+
+    cout << "                           AVL TREE RESULTS"<< endl;
+    tree.print();
+
+    cout << "                         ADJACENCY LIST RESULTS"<< endl;
+    // PRINT ADJACENCY STUFF BELOW 
 }
 
-void readDataBudget(int results, string budget){
-    cout << "temp";
+void readDataBudget(string budget){
+    string country, province, region, title, variety, points, price, ppp;
+    float pricePerPoint;
+
+    Tree tree = Tree();
+    //AdjacencyList list = AdjacencyList(results);
+
+    ifstream loadedFile("winemag-data-130k-v2.csv");
+    string fileLine;
+    getline(loadedFile, fileLine); 
+    getline(loadedFile, fileLine); // getting rid of headers 
+
+    while (getline(loadedFile, fileLine)){
+        istringstream streem(fileLine); // turns line into stream 
+
+        getline(streem, country, ','); 
+        getline(streem, points, ','); 
+        getline(streem, price, ','); 
+        getline(streem, province, ','); 
+        getline(streem, region, ','); 
+        getline(streem, title, ',');
+        getline(streem, variety, ','); 
+        getline(streem, ppp);
+
+        if (stoi(price) <= stoi(budget)){ // only add values that are under or equal to budget 
+            tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
+            // line to add to list here 
+        } 
+        
+    }
+
+    cout << "                           AVL TREE RESULTS"<< endl;
+    tree.print();
+
+
+    cout << "                         ADJACENCY LIST RESULTS"<< endl;
+    // PRINT ADJACENCY STUFF BELOW 
 }
