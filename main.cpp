@@ -2,11 +2,7 @@
 #include "adjacencyList.h"
 #include <fstream> 
 
-void readDataWineType(string wineType);
-void readDataLocation(string location);
-void readDataBudget(string budget);
 void readData(string wineType, string location, string budget);
-Lista list; // adjacency list
 
 int main(){
 
@@ -51,39 +47,8 @@ int main(){
 
             if (option == 4){
                 if (wineType != "" && location != "" && budget != ""){
-/*
-                    cout << "\n                        " << wineType << " | " << location << " | $" << budget << endl << endl;
-
-                    cout << "                     What's your priority?" << endl;
-                    cout << "                    1. Type       2. Location" << endl;
-                    cout << "                          3. Budget" << endl;
-                    cout << "======================================================================" << endl;
-
-                    while (option < 1 || option > 3){
-                        cout << "Priority: ";
-                        cin >> option;
-                        cout << endl;
-                        if (option > 3 || option < 1)
-                            cout << "A number 1-3, please." << endl;
-                    }
-                    
-                    if (option == 1){
-                        readDataWineType(wineType);
-                        return 0;
-                    }
-
-                    if (option == 2){
-                        readDataLocation(location);
-                        return 0;
-                    }
-
-                    if (option == 3){
-                        readDataBudget(budget);
-                        return 0;
-                    }
-*/
-                readData(wineType, location, budget);
-                
+                    readData(wineType, location, budget);
+                    return 0;
                 }
                 else{
                     cout << "Wait! You forgot to enter something!" << endl;
@@ -112,14 +77,14 @@ void readData(string wineType, string location, string budget){
     string country, province, region, title, variety, points, price, ppp;
     float pricePerPoint;
 
-    Tree tree = Tree();
-    //AdjacencyList list = AdjacencyList(results);
+    Tree tree = Tree(); // AVL Tree
+    Lista list; // adjacency list
     
 
     ifstream loadedFile("winemag-data-130k-v2.csv");
     string fileLine;
     getline(loadedFile, fileLine); 
-    getline(loadedFile, fileLine); // getting rid of headers 
+    getline(loadedFile, fileLine); // ^^ getting rid of headers 
 
     while (getline(loadedFile, fileLine)){
         istringstream streem(fileLine); // turns line into stream 
@@ -135,154 +100,18 @@ void readData(string wineType, string location, string budget){
 
         try{
             if (variety == wineType && country == location && stoi(price) <= stoi(budget)){ // only add values that match the variety, location and budget
-            tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
-            list.addVino(country, title, points, price, province, region, variety, ppp);// line to add to list here 
+                tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
+                list.addVino(country, title, points, price, province, region, variety, ppp); 
             } 
         }
-        catch(exception e){
-            
-        }
-        
-         cout << "                           AVL TREE RESULTS"<< endl;
-    tree.print();
-
-
-    cout << "                         ADJACENCY LIST RESULTS"<< endl;
-    // PRINT ADJACENCY STUFF BELOW 
-    }
-}
-
-void readDataWineType(string wineType){
-    string country, province, region, title, variety, points, price, ppp;
-    float pricePerPoint;
-
-    Tree tree = Tree();
-    //AdjacencyList list = AdjacencyList(results);
-    
-
-    ifstream loadedFile("winemag-data-130k-v2.csv");
-    string fileLine;
-    getline(loadedFile, fileLine); 
-    getline(loadedFile, fileLine); // getting rid of headers 
-
-    while (getline(loadedFile, fileLine)){
-        istringstream streem(fileLine); // turns line into stream 
-
-        getline(streem, country, ','); 
-        getline(streem, points, ','); 
-        getline(streem, price, ','); 
-        getline(streem, province, ','); 
-        getline(streem, region, ','); 
-        getline(streem, title, ',');
-        getline(streem, variety, ','); 
-        getline(streem, ppp);
-
-        try{
-            if (variety == wineType){ // only add values that match the variety 
-            tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
-            list.addVino(country, title, points, price, province, region, variety, ppp);// line to add to list here 
-            } 
-        }
-        catch(exception e){
-            
-        }
-        
+        catch(exception e){ }
         
     }
 
     cout << "                           AVL TREE RESULTS"<< endl;
-    tree.print();
+        tree.print();
 
 
-    cout << "                         ADJACENCY LIST RESULTS"<< endl;
-    // PRINT ADJACENCY STUFF BELOW 
-}
-
-void readDataLocation(string location){
-    string country, province, region, title, variety, points, price, ppp;
-    float pricePerPoint;
-
-    Tree tree = Tree();
-    //AdjacencyList list = AdjacencyList(results);
-
-    ifstream loadedFile("winemag-data-130k-v2.csv");
-    string fileLine;
-    getline(loadedFile, fileLine); 
-    getline(loadedFile, fileLine); // getting rid of headers 
-
-    while (getline(loadedFile, fileLine)){
-        istringstream streem(fileLine); // turns line into stream 
-
-        getline(streem, country, ','); 
-        getline(streem, points, ','); 
-        getline(streem, price, ','); 
-        getline(streem, province, ','); 
-        getline(streem, region, ','); 
-        getline(streem, title, ',');
-        getline(streem, variety, ','); 
-        getline(streem, ppp);
-
-        try{
-            if (country == location){ // only add values that match the country  
-            tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
-            list.addVino(country, title, points, price, province, region, variety, ppp);// line to add to list here 
-            } 
-        }
-        catch(exception e){
-
-        }
-        
-        
-    }
-
-    cout << "                           AVL TREE RESULTS"<< endl;
-    tree.print();
-
-    cout << "                         ADJACENCY LIST RESULTS"<< endl;
-    // PRINT ADJACENCY STUFF BELOW 
-}
-
-void readDataBudget(string budget){
-    string country, province, region, title, variety, points, price, ppp;
-    float pricePerPoint;
-
-    Tree tree = Tree();
-    //AdjacencyList list = AdjacencyList(results);
-
-    ifstream loadedFile("winemag-data-130k-v2.csv");
-    string fileLine;
-    getline(loadedFile, fileLine); 
-    getline(loadedFile, fileLine); // getting rid of headers 
-
-    while (getline(loadedFile, fileLine)){
-        istringstream streem(fileLine); // turns line into stream 
-
-        getline(streem, country, ','); 
-        getline(streem, points, ','); 
-        getline(streem, price, ','); 
-        getline(streem, province, ','); 
-        getline(streem, region, ','); 
-        getline(streem, title, ',');
-        getline(streem, variety, ','); 
-        getline(streem, ppp);
-
-        try{
-            if (stoi(price) <= stoi(budget)){ // only add values that are under or equal to budget 
-            tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
-            list.addVino(country, title, points, price, province, region, variety, ppp);// line to add to list here 
-            } 
-
-        }
-        catch(exception e){
-
-        }
-        
-    }
-
-    cout << "                           AVL TREE RESULTS"<< endl;
-    tree.print();
-
-
-    cout << "                         ADJACENCY LIST RESULTS"<< endl;
+        cout << "                         ADJACENCY LIST RESULTS"<< endl;
     // PRINT ADJACENCY STUFF BELOW 
 }
