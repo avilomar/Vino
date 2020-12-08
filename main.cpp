@@ -66,14 +66,17 @@ int main(){
                     
                     if (option == 1){
                         readDataWineType(wineType);
+                        return 0;
                     }
 
                     if (option == 2){
                         readDataLocation(location);
+                        return 0;
                     }
 
                     if (option == 3){
                         readDataBudget(budget);
+                        return 0;
                     }
 
                 }
@@ -124,10 +127,16 @@ void readDataWineType(string wineType){
         getline(streem, variety, ','); 
         getline(streem, ppp);
 
-        if (variety == wineType){ // only add values that match the variety 
+        try{
+            if (variety == wineType){ // only add values that match the variety 
             tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
             // line to add to list here 
-        } 
+            } 
+        }
+        catch(exception e){
+            
+        }
+        
         
     }
 
@@ -163,10 +172,16 @@ void readDataLocation(string location){
         getline(streem, variety, ','); 
         getline(streem, ppp);
 
-        if (country == location){ // only add values that match the country  
+        try{
+            if (country == location){ // only add values that match the country  
             tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
             // line to add to list here 
-        } 
+            } 
+        }
+        catch(exception e){
+
+        }
+        
         
     }
 
@@ -201,10 +216,16 @@ void readDataBudget(string budget){
         getline(streem, variety, ','); 
         getline(streem, ppp);
 
-        if (stoi(price) <= stoi(budget)){ // only add values that are under or equal to budget 
+        try{
+            if (stoi(price) <= stoi(budget)){ // only add values that are under or equal to budget 
             tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
             // line to add to list here 
-        } 
+            } 
+
+        }
+        catch(exception e){
+
+        }
         
     }
 
