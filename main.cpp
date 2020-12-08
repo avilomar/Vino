@@ -3,7 +3,10 @@
 #include <fstream> 
 #include <chrono>
 
-void readData(string wineType, string location, string budget);
+void readDataTree(string wineType, string location, string budget);
+void readDataList(string wineType, string location, string budget);
+ Tree tree = Tree(); // AVL Tree
+string myTime;
 
 int main(){
 
@@ -48,7 +51,9 @@ int main(){
 
             if (option == 4){
                 if (wineType != "" && location != "" && budget != ""){
-                    readData(wineType, location, budget);
+                    readDataList(wineType, location, budget);
+                    readDataTree(wineType, location, budget);
+                    
                     return 0;
                 }
                 else{
@@ -74,20 +79,21 @@ int main(){
     return 0;
 }
 
-void readData(string wineType, string location, string budget){
+void readDataTree(string wineType, string location, string budget){
     string country, province, region, title, variety, points, price, ppp;
     float pricePerPoint;
     int myCount = 0;
 
-    Tree tree = Tree(); // AVL Tree
-    Lista list; // adjacency list
+   
     
+    
+    auto treeStart = std::chrono::high_resolution_clock::now();
 
     ifstream loadedFile("winemag-data-130k-v2.csv");
     string fileLine;
     getline(loadedFile, fileLine); 
     getline(loadedFile, fileLine); // ^^ getting rid of headers 
-
+    
     while (getline(loadedFile, fileLine)){
         istringstream streem(fileLine); // turns line into stream 
 
@@ -103,29 +109,80 @@ void readData(string wineType, string location, string budget){
         try{
             if (variety == wineType && country == location && stoi(price) <= stoi(budget)){ // only add values that match the variety, location and budget
                 tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
+                //myCount += list.addVino(country, title, points, price, province, region, variety, ppp); 
+            } 
+        }
+        catch(exception e){ } // skips adding any "problem entries" (missing data, incorrect data, etc.)
+        
+    }
+    auto treeEnd = std::chrono::high_resolution_clock::now();
+    // timing help from https://stackoverflow.com/questions/22387586/measuring-execution-time-of-a-function-in-c
+    cout << "                           RESULTS"<< endl;
+
+
+    tree.print();
+    cout << endl;
+
+cout << "                           AVL TREE TIME"<< endl;
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(treeEnd - treeStart ).count();
+    cout << "\n                TOTAL TIME TAKEN: " << duration << " MICROSECONDS" << endl;
+
+    cout << endl;
+
+    cout << "                           ADJACENCY LIST TIME"<< endl;
+    
+    cout << myTime << endl;
+
+
+
+
+
+}
+
+void readDataList(string wineType, string location, string budget){
+    string country, province, region, title, variety, points, price, ppp;
+    float pricePerPoint;
+    int myCount = 0;
+
+    
+    Lista list; // adjacency list
+    
+    auto listStart = std::chrono::high_resolution_clock::now();
+
+    ifstream loadedFile("winemag-data-130k-v2.csv");
+    string fileLine;
+    getline(loadedFile, fileLine); 
+    getline(loadedFile, fileLine); // ^^ getting rid of headers 
+    
+    while (getline(loadedFile, fileLine)){
+        istringstream streem(fileLine); // turns line into stream 
+
+        getline(streem, country, ','); 
+        getline(streem, points, ','); 
+        getline(streem, price, ','); 
+        getline(streem, province, ','); 
+        getline(streem, region, ','); 
+        getline(streem, title, ',');
+        getline(streem, variety, ','); 
+        getline(streem, ppp);
+
+        try{
+            if (variety == wineType && country == location && stoi(price) <= stoi(budget)){ // only add values that match the variety, location and budget
+                //tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
                 myCount += list.addVino(country, title, points, price, province, region, variety, ppp); 
             } 
         }
         catch(exception e){ } // skips adding any "problem entries" (missing data, incorrect data, etc.)
         
     }
-
-    // timing help from https://stackoverflow.com/questions/22387586/measuring-execution-time-of-a-function-in-c
-    cout << "                           AVL TREE RESULTS"<< endl;
-
-    auto treeStart = std::chrono::high_resolution_clock::now();
-    tree.print();
-    auto treeEnd = std::chrono::high_resolution_clock::now();
-
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(treeEnd - treeStart ).count();
-    cout << "\n                TOTAL TIME TAKEN: " << duration << " MICROSECONDS" << endl;
-
-
-    cout << "\n                         ADJACENCY LIST RESULTS"<< endl;
-    // PRINT ADJACENCY STUFF BELOW 
-    auto listStart = std::chrono::high_resolution_clock::now();
-    list.losVinos();
     auto listEnd = std::chrono::high_resolution_clock::now();
-    auto listDuration = std::chrono::duration_cast<std::chrono::microseconds>(listEnd - listStart ).count();
-    cout << "\n                TOTAL TIME TAKEN: " << listDuration << " MICROSECONDS" << endl;
+    // timing help from https://stackoverflow.com/questions/22387586/measuring-execution-time-of-a-function-in-c
+    //cout << "                           ADJACENCY LIST TIME"<< endl;
+
+    //auto treeStart = std::chrono::high_resolution_clock::now();
+    //tree.print();
+    //auto treeEnd = std::chrono::high_resolution_clock::now();
+
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(listEnd - listStart ).count();
+    myTime = "\n                TOTAL TIME TAKEN: " + to_string(duration) + " MICROSECONDS";
 }
