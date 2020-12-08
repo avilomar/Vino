@@ -77,6 +77,7 @@ int main(){
 void readData(string wineType, string location, string budget){
     string country, province, region, title, variety, points, price, ppp;
     float pricePerPoint;
+    int myCount = 0;
 
     Tree tree = Tree(); // AVL Tree
     Lista list; // adjacency list
@@ -102,7 +103,7 @@ void readData(string wineType, string location, string budget){
         try{
             if (variety == wineType && country == location && stoi(price) <= stoi(budget)){ // only add values that match the variety, location and budget
                 tree.addNode(title, variety, country, province, region, stof(ppp), stoi(price));
-                list.addVino(country, title, points, price, province, region, variety, ppp); 
+                myCount += list.addVino(country, title, points, price, province, region, variety, ppp); 
             } 
         }
         catch(exception e){ } // skips adding any "problem entries" (missing data, incorrect data, etc.)
@@ -122,4 +123,6 @@ void readData(string wineType, string location, string budget){
 
     cout << "                         ADJACENCY LIST RESULTS"<< endl;
     // PRINT ADJACENCY STUFF BELOW 
+    cout << "MYCOUNT: "<< myCount << endl;
+    list.losVinos();
 }
