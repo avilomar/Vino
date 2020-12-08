@@ -117,9 +117,9 @@ void readData(string wineType, string location, string budget){
     auto treeEnd = std::chrono::high_resolution_clock::now();
 
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(treeEnd - treeStart ).count();
-    cout << "\n\n                TOTAL TIME TAKEN: " << duration << " MICROSECONDS" << endl;
+    cout << "\n                TOTAL TIME TAKEN: " << duration << " MICROSECONDS" << endl;
 
 
-    cout << "                         ADJACENCY LIST RESULTS"<< endl;
+    cout << "\n                         ADJACENCY LIST RESULTS"<< endl;
     // PRINT ADJACENCY STUFF BELOW 
 }
