@@ -123,6 +123,9 @@ void readData(string wineType, string location, string budget){
 
     cout << "\n                         ADJACENCY LIST RESULTS"<< endl;
     // PRINT ADJACENCY STUFF BELOW 
-    cout << "MYCOUNT: "<< myCount << endl;
+    auto listStart = std::chrono::high_resolution_clock::now();
     list.losVinos();
+    auto listEnd = std::chrono::high_resolution_clock::now();
+    auto listDuration = std::chrono::duration_cast<std::chrono::microseconds>(listEnd - listStart ).count();
+    cout << "\n                TOTAL TIME TAKEN: " << listDuration << " MICROSECONDS" << endl;
 }
