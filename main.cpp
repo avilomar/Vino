@@ -132,6 +132,7 @@ cout << "                           AVL TREE TIME"<< endl;
     cout << "                           ADJACENCY LIST TIME"<< endl;
     
     cout << myTime << endl;
+    cout << endl;
 
 
 

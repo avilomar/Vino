@@ -248,10 +248,10 @@ void Tree::print(){
 Tree::Node* Tree::Inorder(Node* currNode){
     if (currNode != nullptr){
         Inorder(currNode->left);
-        if (numTracker < 50){ // only print out first 50 
+        
             cout << numTracker+1 << ". " << currNode->name << " | " << currNode->type << " | " << currNode->location 
             << ", " << currNode->region << ", " << currNode->province << " | $" << currNode->price << endl;
-        }
+        
         numTracker++;
         Inorder(currNode->right);
     }
