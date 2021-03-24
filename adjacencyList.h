@@ -9,7 +9,7 @@
 using namespace std;
 class Lista{
 private:
-    map<float, map<string, string> > vinos;
+    map<float, map<string, string> > vinos; // adjacency list
 public:
     int addVino(string country, string title, string points, string price, string province, string region, string variety, string pricePerPoint);
 };
